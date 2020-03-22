@@ -24,8 +24,9 @@ async def corona(message):
     output_text += "`Deaths : {}`\n".format(country_data["deaths"])
     output_text += "`Recovered : {}`\n".format(country_data["recovered"])
     output_text += "`Last update : {}`\n". \
-    for name, value in country_data.items():
         format(datetime.utcfromtimestamp(country_data["last_update"] // 1000).strftime('%Y-%m-%d %H:%M:%S'))
+    for name, value in country_data.items():
+        output_text += "`{}`: `{}`\n".format(str(name), str(value))
     await message.edit("**Corona Virus Info in {}**:\n\n{}".format(country.capitalize(), output_text))
 
 
