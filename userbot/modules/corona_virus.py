@@ -21,7 +21,7 @@ async def corona(message):
     country_data = get_country_data(country, data)
     output_text = ""
     for name, value in country_data.items():
-    output_text += "`Confirmed : {}\n`".format(country_data["confirmed"])
+    output_text = "`Confirmed : {}\n`".format(country_data["confirmed"])
     output_text += "`Active : {}`\n".format(country_data["active"])
     output_text += "`Deaths : {}`\n".format(country_data["deaths"])
     output_text += "`Recovered : {}`\n".format(country_data["recovered"])
