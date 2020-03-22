@@ -5,16 +5,18 @@
 #
 # Port to UserBot by @MoveAngel
 
+from datetime import datetime
+
 from covid import Covid
 from userbot import CMD_HELP
 from userbot.events import register
 
 @register(outgoing=True, pattern="^.corona(?: |$)(.*)")
-async def corona(client, message):
-    args = message.text.split(None, 1)
+async def corona(event):
     covid = Covid()
     data = covid.get_data()
-    country = args[1]
+    input_str = event.pattern_match.group(1)
+    country = input_str.capitalize()
     country_data = get_country_data(country.capitalize(), data)
     output_text = "`Confirmed : {}\n`".format(country_data["confirmed"])
     output_text += "`Active : {}`\n".format(country_data["active"])
@@ -22,7 +24,7 @@ async def corona(client, message):
     output_text += "`Recovered : {}`\n".format(country_data["recovered"])
     output_text += "`Last update : {}`\n". \
         format(datetime.utcfromtimestamp(country_data["last_update"] // 1000).strftime('%Y-%m-%d %H:%M:%S'))
-    await message.edit("**Corona Virus Info in {}**:\n\n{}".format(country.capitalize(), output_text))
+    await event.edit("**Corona Virus Info in {}**:\n\n{}".format(country.capitalize(), output_text))
 
 
 def get_country_data(country, world):
