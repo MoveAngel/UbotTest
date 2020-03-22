@@ -1,4 +1,4 @@
-[![Build](https://github.com/MoveAngel/UbotTest/workflows/FailedChecker/badge.svg?branch=unstable)](https://github.com/MoveAngel/One4uBot/actions "Build Pass")
+[![Build](https://github.com/MoveAngel/UbotTest/workflows/Checker/badge.svg?branch=unstable)](https://github.com/MoveAngel/UbotTest/actions "Build Pass")
 <h1 align="center">Project One4uBot</h1>
 <h3 align="center">A modular Telegram userbot running on Python 3.8+ with an sqlalchemy database.</h3>
 <h4 align="center">Based on RaphielGang's <a href="https://github.com/RaphielGang/Telegram-UserBot">Paperplane</a> Telegram userbot...</h4>
