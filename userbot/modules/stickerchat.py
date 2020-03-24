@@ -15,7 +15,7 @@ import telethon
 
 from PIL import Image
 from io import BytesIO
-from userbot import bot, CMD_HELP
+from userbot import bot, CMD_HELP, QUOTES_API_TOKEN
 from userbot.events import register
 
 
@@ -42,8 +42,7 @@ if 1 == 1:
         "channel": "Channel"
     }
 
-    config = dict({"QUOTES_API_TOKEN": os.environ.get("QUOTES_API_TOKEN"), 
-                                          "api_url": "http://api.antiddos.systems",
+    config = dict({"api_url": "http://api.antiddos.systems",
                                           "username_colors": ["#fb6169", "#faa357", "#b48bf2", "#85de85",
                                                               "#62d4e3", "#65bdf3", "#ff5694"],
                                           "default_username_color": "#b48bf2"})
@@ -124,7 +123,7 @@ if 1 == 1:
             "Text": reply.message,
             "Markdown": get_markdown(reply),
             "Template": args[0],
-            "APIKey": config["QUOTES_API_TOKEN"]
+            "APIKey": QUOTES_API_TOKEN
         })
 
         resp = requests.post(config["api_url"] + "/api/v2/quote", data=request)
@@ -146,7 +145,7 @@ if 1 == 1:
         elif resp["status"] == 404:
             if resp["message"] == "ERROR_TEMPLATE_NOT_FOUND":
                 newreq = requests.post(config["api_url"] + "/api/v1/getalltemplates", data={
-                    "token": config["QUOTES_API_TOKEN"]
+                    "token": QUOTES_API_TOKEN
                 })
                 newreq = newreq.json()
 
