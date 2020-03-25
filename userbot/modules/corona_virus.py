@@ -9,23 +9,49 @@ from covid import Covid
 from userbot import CMD_HELP
 from userbot.events import register
 
-@register(outgoing=True, pattern="^.covid(?: |$)(.*)")
-async def corona(event):
-    covid = Covid()
-    data = covid.get_data()
-    input_str = event.pattern_match.group(1)
-    country = input_str.capitalize()
-    country_data = get_country_data(country, data)
-    output_text = "" 
-    for name, value in country_data.items():
-        output_text += "`{}`: `{}`\n".format(str(name), str(value))
-    await event.edit("**CoronaVirus Info in {}**:\n\n{}".format(country.capitalize(), output_text))
+plugin_category = "pandemic"
+covid_str = ("**{country}:**  🦠 **{active}**  💀 **{deaths}**  💚 "
+             "**{recovered}**  ✅ **{confirmed}**")
+covid_countries = "{name}: {id}"
 
-def get_country_data(country, world):
-    for country_data in world:
-        if country_data["country"] == country:
-            return country_data
-    return {"Status": "No information yet about this country!"}
+@register(outgoing=True, pattern="^.covid(?: |$)(.*)")
+async def covid19(event):
+    """Get the current covid stats for a specific country or overall."""
+    covid = Covid()
+    match = event.pattern_match.group(1)
+    if match:
+        strings = []
+        args, _ = await client.parse_arguments(match)
+        if match.lower() == "countries":
+            countries = {}
+            countries_list = covid.list_countries()
+            for c in countries_list:
+                countries[c['name']] = covid_countries.format(**c)
+            strings = [y for _, y in sorted(countries.items())]
+        else:
+            for c in args:
+                try:
+                    if c.isnumeric():
+                        country = covid.get_status_by_country_id(c)
+                    else:
+                        country = covid.get_status_by_country_name(c)
+                    strings.append(covid_str.format(**country))
+                except ValueError:
+                    continue
+        if strings:
+            await event.answer(',\n'.join(strings))
+    else:
+        country = "Worldwide"
+        active = covid.get_total_active_cases()
+        confirmed = covid.get_total_confirmed_cases()
+        recovered = covid.get_total_recovered()
+        deaths = covid.get_total_deaths()
+        string = covid_str.format(country=country,
+                                  active=active,
+                                  confirmed=confirmed,
+                                  recovered=recovered,
+                                  deaths=deaths)
+        await event.answer(string)
     
     
 CMD_HELP.update({
