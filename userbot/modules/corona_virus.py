@@ -21,13 +21,13 @@ async def covid19(event):
     match = event.pattern_match.group(1)
     if match:
         strings = []
-        args, _ = await bot.parse_arguments(match)
+        args, txt = await bot.parse_arguments(match)
         if match.lower() == "countries":
             countries = {}
             countries_list = covid.list_countries()
             for c in countries_list:
                 countries[c['name']] = covid_countries.format(**c)
-            strings = [y for _, y in sorted(countries.items())]
+            strings = [y for txt, y in sorted(countries.items())]
         else:
             for c in args:
                 try:
