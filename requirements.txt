@@ -44,6 +44,6 @@ telegraph
 urbandict>=0.5
 wikipedia>=1.4.0
 coffeehouse
-covid
+covid==2.0.4
 PyGithub
 python-dateutil

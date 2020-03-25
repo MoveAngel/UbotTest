@@ -287,7 +287,7 @@ async def getsticker(event):
         await reply.download_media(sticker_bytes)
         sticker = io.BytesIO()
         try:
-            pilImg = PIL.Image.open(sticker_bytes)
+            pilImg = Image.open(sticker_bytes)
         except OSError as e:
             await event.answer(f'`OSError: {e}`')
             return
