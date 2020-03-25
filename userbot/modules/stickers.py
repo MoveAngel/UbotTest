@@ -295,7 +295,7 @@ async def getsticker(event):
         pilImg.close()
         sticker.name = "sticcer.png"
         sticker.seek(0)
-        if event.matches[0].group(1):
+        if event.pattern_match.group(1):
             await reply.reply(file=sticker, force_document=True)
         else:
             await reply.reply(file=sticker)
