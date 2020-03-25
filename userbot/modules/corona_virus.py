@@ -6,7 +6,7 @@
 # Port to UserBot by @MoveAngel
 
 from covid import Covid
-from userbot import CMD_HELP
+from userbot import CMD_HELP, bot
 from userbot.events import register
 
 plugin_category = "pandemic"
@@ -21,7 +21,7 @@ async def covid19(event):
     match = event.pattern_match.group(1)
     if match:
         strings = []
-        args, _ = await client.parse_arguments(match)
+        args, _ = await bot.parse_arguments(match)
         if match.lower() == "countries":
             countries = {}
             countries_list = covid.list_countries()
