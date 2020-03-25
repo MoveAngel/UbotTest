@@ -266,6 +266,45 @@ async def resize_photo(photo):
     return image
 
 
+@register(outgoing=True, pattern="^.getsticker (media|text)$")
+async def getsticker(event):
+    """Convert a sticker to a png and also send it as a file if specified."""
+    if not event.reply_to_msg_id:
+        await event.answer("`Reply to a sticker first.`")
+        return
+
+    reply = await event.get_reply_message()
+    sticker = reply.sticker
+    if not sticker:
+        await event.answer("`This isn't a sticker, smh.`")
+        return
+
+    if sticker.mime_type == "application/x-tgsticker":
+        await event.answer("`No point in uploading animated stickers.`")
+        return
+    else:
+        sticker_bytes = io.BytesIO()
+        await reply.download_media(sticker_bytes)
+        sticker = io.BytesIO()
+        try:
+            pilImg = PIL.Image.open(sticker_bytes)
+        except OSError as e:
+            await event.answer(f'`OSError: {e}`')
+            return
+        pilImg.save(sticker, format="PNG")
+        pilImg.close()
+        sticker.name = "sticcer.png"
+        sticker.seek(0)
+        if event.matches[0].group(1):
+            await reply.reply(file=sticker, force_document=True)
+        else:
+            await reply.reply(file=sticker)
+        sticker_bytes.close()
+        sticker.close()
+
+    await event.delete()
+
+
 @register(outgoing=True, pattern="^.stkrinfo$")
 async def get_pack_info(event):
     if not event.is_reply:
@@ -319,6 +358,8 @@ CMD_HELP.update({
 \nUsage: Kang's the sticker/image to the specified pack but uses 🤔 as emoji.\
 \n\n.kang [emoji('s)] [number]\
 \nUsage: Kang's the sticker/image to the specified pack and uses the emoji('s) you picked.\
+\n\n.getsticker\
+\nUsage: Get sticker to image compressed.\
 \n\n.stkrinfo\
 \nUsage: Gets info about the sticker pack."
 })
