@@ -267,20 +267,20 @@ async def resize_photo(photo):
 
 
 @register(outgoing=True, pattern="^.getsticker (media|text)$")
-async def getsticker(event):
+async def getsticker(tikel):
     """Convert a sticker to a png and also send it as a file if specified."""
-    if not event.reply_to_msg_id:
-        await event.answer("`Reply to a sticker first.`")
+    if not tikel.reply_to_msg_id:
+        await tikel.answer("`Reply to a sticker first.`")
         return
 
-    reply = await event.get_reply_message()
+    reply = await tikel.get_reply_message()
     sticker = reply.sticker
     if not sticker:
-        await event.answer("`This isn't a sticker, smh.`")
+        await tikel.answer("`This isn't a sticker, smh.`")
         return
 
     if sticker.mime_type == "application/x-tgsticker":
-        await event.answer("`No point in uploading animated stickers.`")
+        await tikel.answer("`No point in uploading animated stickers.`")
         return
     else:
         sticker_bytes = io.BytesIO()
@@ -289,7 +289,7 @@ async def getsticker(event):
         try:
             pilImg = Image.open(sticker_bytes)
         except OSError as e:
-            await event.answer(f'`OSError: {e}`')
+            await tikel.answer(f'`OSError: {e}`')
             return
         pilImg.save(sticker, format="PNG")
         pilImg.close()
@@ -301,8 +301,7 @@ async def getsticker(event):
             await reply.reply(file=sticker)
         sticker_bytes.close()
         sticker.close()
-
-    await event.delete()
+    await tikel.delete()
 
 
 @register(outgoing=True, pattern="^.stkrinfo$")
