@@ -11,7 +11,7 @@ from userbot import CMD_HELP
 from userbot.events import register
 
 @register(outgoing=True, pattern="^.covid(?: |$)(.*)")
-async def corona(message):
+async def corona(client, message):
     await message.edit("`Processing...`")
     args = message.text.split(None, 1)
     if len(args) == 1:
@@ -21,7 +21,7 @@ async def corona(message):
             shutil.copyfileobj(response.raw, out_file)
         del response
         os.rename("og", "og.png")
-        await bot.send_photo(message.chat.id, "og.png", caption="<a href=\"https://covid-19-api-2-i54peomv2.now.sh"
+        await client.send_photo(message.chat.id, "og.png", caption="<a href=\"https://covid-19-api-2-i54peomv2.now.sh"
                                                                    "/api/og\">Source</a>")
         await message.delete()
         os.remove("og.png")
