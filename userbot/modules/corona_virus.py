@@ -21,7 +21,7 @@ async def corona(client, message):
             shutil.copyfileobj(response.raw, out_file)
         del response
         os.rename("og", "og.png")
-        await client.send_photo(message.chat.id, "og.png", caption="<a href=\"https://covid-19-api-2-i54peomv2.now.sh"
+        await client.send_file(message.chat.id, "og.png", caption="<a href=\"https://covid-19-api-2-i54peomv2.now.sh"
                                                                    "/api/og\">Source</a>")
         await message.delete()
         os.remove("og.png")
