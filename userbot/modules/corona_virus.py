@@ -9,19 +9,21 @@ import os
 import shutil
 from datetime import datetime
 
-import requests
+import requests import get
 from covid import Covid
 
-from userbot import CMD_HELP
+from userbot import bot, CMD_HELP
 from userbot.events import register
 
+client = bot
+
 @register(outgoing=True, pattern="^.covid(?: |$)(.*)")
-async def corona(client, message):
+async def corona(message):
     await message.edit("`Processing...`")
     args = message.text.split(None, 1)
     if len(args) == 1:
         url = 'https://covid-19-api-2-i54peomv2.now.sh/api/og'
-        response = requests.get(url, stream=True)
+        response = get(url, stream=True)
         with open('og', 'wb') as out_file:
             shutil.copyfileobj(response.raw, out_file)
         del response
