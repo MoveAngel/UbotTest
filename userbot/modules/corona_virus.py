@@ -9,7 +9,7 @@ import os
 import shutil
 from datetime import datetime
 
-import requests import get
+import requests
 from covid import Covid
 
 from userbot import bot, CMD_HELP
@@ -23,7 +23,7 @@ async def corona(message):
     args = message.text.split(None, 1)
     if len(args) == 1:
         url = 'https://covid-19-api-2-i54peomv2.now.sh/api/og'
-        response = get(url, stream=True)
+        response = requests.get(url, stream=True)
         with open('og', 'wb') as out_file:
             shutil.copyfileobj(response.raw, out_file)
         del response
