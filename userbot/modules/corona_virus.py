@@ -15,23 +15,12 @@ from covid import Covid
 from userbot import bot, CMD_HELP
 from userbot.events import register
 
-client = bot
 
 @register(outgoing=True, pattern="^.covid(?: |$)(.*)")
-async def corona(message):
-    await message.edit("`Processing...`")
-    args = message.text.split(None, 1)
+async def corona(event):
+    await event.edit("`Processing...`")
+    args = event.text.split(None, 1)
     if len(args) == 1:
-        url = 'https://covid-19-api-2-i54peomv2.now.sh/api/og'
-        response = requests.get(url, stream=True)
-        with open('og', 'wb') as out_file:
-            shutil.copyfileobj(response.raw, out_file)
-        del response
-        os.rename("og", "og.png")
-        await client.send_file(message.chat.id, "og.png", caption="<a href=\"https://covid-19-api-2-i54peomv2.now.sh"
-                                                                   "/api/og\">Source</a>")
-        await message.delete()
-        os.remove("og.png")
         return
     covid = Covid()
     data = covid.get_data()
@@ -44,13 +33,10 @@ async def corona(message):
         output_text += "`Recovered   : {}`\n".format(country_data["recovered"])
         output_text += "`Last update : {}`\n". \
             format(datetime.utcfromtimestamp(country_data["last_update"] // 1000).strftime('%Y-%m-%d %H:%M:%S'))
-        output_text += "`Data provided by `<a href=\"https://j.mp/2xf6oxF\">Johns Hopkins University</a>"
+        output_text += f"Data provided by [Johns Hopkins University](https://j.mp/2xf6oxF)"
     else:
         output_text = "`No information yet about this country!`"
-    await message.edit("**Corona Virus Info in {}**:\n\n{}".format(country.capitalize(), output_text))
-    # TODO : send location of country
-    # await client.send_location(message.chat.id, float(country_data["latitude"]), float(country_data["longitude"]))
-
+    await event.edit("**Corona Virus Info in {}**:\n\n{}".format(country.capitalize(), output_text))
 
 def get_country_data(country, world):
     for country_data in world:
