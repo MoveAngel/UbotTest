@@ -16,7 +16,7 @@ from userbot import bot, CMD_HELP
 from userbot.events import register
 
 
-@register(outgoing=True, pattern="^.covid(?: |$)(.*)")
+@register(outgoing=True, pattern="^.covid(.*)")
 async def corona(event):
     await event.edit("`Processing...`")
     args = event.text.split(None, 1)
