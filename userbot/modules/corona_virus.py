@@ -27,7 +27,7 @@ async def corona(event):
         output_text += f"Data provided by [Johns Hopkins University](https://j.mp/2xf6oxF)"
     else:
         output_text = "No information yet about this country!"
-    await event.edit("Corona Virus Info in {}:\n\n{}".format(country.capitalize(), output_text))
+    await event.edit(f"Corona Virus Info in {country}:\n\n{output_text}")
     
     
 CMD_HELP.update({
