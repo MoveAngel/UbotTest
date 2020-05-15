@@ -93,20 +93,20 @@ async def get_user(event):
     return replied_user
 
 
-async def LastOnline(user: User):
+async def SeenOnlineStatus(user):
     if user.is_bot:
         return ""
-    elif user.status.recently:
+    elif replied_user.user.status.recently:
         return "Recently"
-    elif user.status.within_week:
+    elif replied_user.user.status.last_week:
         return "Within the last week"
-    elif user.status.within_month:
+    elif replied_user.user.status.last_month:
         return "Within the last month"
-    elif user.status.long_time_ago:
+    elif replied_user.user.status.empty:
         return "A long time ago"
-    elif user.status.online:
+    elif replied_user.user.status.online:
         return "Currently Online"
-    elif user.status.offline:
+    elif replied_user.user.status.offline:
         return datetime.fromtimestamp(user.status.date).strftime("%a, %d %b %Y, %H:%M:%S")
 
 
@@ -136,7 +136,7 @@ async def fetch_info(replied_user, event):
     is_bot = replied_user.user.bot
     restricted = replied_user.user.restricted
     verified = replied_user.user.verified
-    last_online=LastOnline(user)
+    user_status = SeenOnlineStatus
     photo = await event.client.download_profile_photo(user_id,
                                                       TEMP_DOWNLOAD_DIRECTORY +
                                                       str(user_id) + ".jpg",
@@ -161,7 +161,7 @@ async def fetch_info(replied_user, event):
     caption += f"ID: <code>{user_id}</code>\n\n"
     caption += f"Bio: \n<code>{user_bio}</code>\n\n"
     caption += f"Common Chats with this user: {common_chat}\n"
-    caption += f"Last Seen: `{last_online}`"
+    caption += f"Last Seen: `{user_status}`\n"
     caption += f"Permanent Link To Profile: "
     caption += f"<a href=\"tg://user?id={user_id}\">{first_name}</a>"
 
