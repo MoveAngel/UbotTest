@@ -132,19 +132,19 @@ async def fetch_info(replied_user, event):
         "This User has no Username")
     user_bio = "This User has no About" if not user_bio else user_bio
     user_status = user_status( "" )
-                  if is_bot:
+                  is_bot:
                     return "None"
-                  elif user.status.recently:
+                  user.status.recently:
                     return "Recently"
-                  elif user.status.last_week:
+                  user.status.last_week:
                     return "Within the last week"
-                  elif user.status.last_month:
+                  user.status.last_month:
                     return "Within the last month"
-                  elif user.status.empty:
+                  user.status.empty:
                     return "A long time ago"
-                  elif user.status.online:
+                  user.status.online:
                     return "Currently Online"
-                  elif user.status.offline:
+                  user.status.offline:
                     return datetime.fromtimestamp(user.status.date).strftime("%a, %d %b %Y, %H:%M:%S")
 
     caption = "<b>USER INFO:</b>\n\n"
