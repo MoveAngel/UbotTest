@@ -119,7 +119,6 @@ async def fetch_info(replied_user, event):
     is_bot = replied_user.user.bot
     restricted = replied_user.user.restricted
     verified = replied_user.user.verified
-    user_status = replied_user.user.status
     photo = await event.client.download_profile_photo(user_id,
                                                       TEMP_DOWNLOAD_DIRECTORY +
                                                       str(user_id) + ".jpg",
@@ -131,21 +130,6 @@ async def fetch_info(replied_user, event):
     username = "@{}".format(username) if username else (
         "This User has no Username")
     user_bio = "This User has no About" if not user_bio else user_bio
-    user_status = user_status.replace( "" ) if user_status else (
-                  is_bot
-                    "None"
-                  user.status.recently
-                    return "Recently"
-                  user.status.last_week
-                    return "Within the last week"
-                  user.status.last_month
-                    return "Within the last month"
-                  user.status.empty
-                    return "A long time ago"
-                  user.status.online
-                    return "Currently Online"
-                  user.status.offline
-                    return datetime.fromtimestamp(user.status.date).strftime("%a, %d %b %Y, %H:%M:%S"))
 
     caption = "<b>USER INFO:</b>\n\n"
     caption += f"First Name: {first_name}\n"
@@ -159,7 +143,6 @@ async def fetch_info(replied_user, event):
     caption += f"ID: <code>{user_id}</code>\n\n"
     caption += f"Bio: \n<code>{user_bio}</code>\n\n"
     caption += f"Common Chats with this user: {common_chat}\n"
-    caption += f"Last Seen: <code>{user_status}</code>\n"
     caption += f"Permanent Link To Profile: "
     caption += f"<a href=\"tg://user?id={user_id}\">{first_name}</a>"
 
