@@ -136,7 +136,7 @@ async def fetch_info(replied_user, event):
     is_bot = replied_user.user.bot
     restricted = replied_user.user.restricted
     verified = replied_user.user.verified
-    user_status = SeenOnlineStatus
+    user_status = replied_user.user.status
     photo = await event.client.download_profile_photo(user_id,
                                                       TEMP_DOWNLOAD_DIRECTORY +
                                                       str(user_id) + ".jpg",
