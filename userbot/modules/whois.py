@@ -9,9 +9,11 @@
 
 import os
 
+from time import sleep
+from datetime import datetime
 from telethon.tl.functions.photos import GetUserPhotosRequest
 from telethon.tl.functions.users import GetFullUserRequest
-from telethon.tl.types import MessageEntityMentionName
+from telethon.tl.types import MessageEntityMentionName, UserStatus
 from telethon.utils import get_input_location
 from userbot import CMD_HELP, TEMP_DOWNLOAD_DIRECTORY
 from userbot.events import register
@@ -91,6 +93,23 @@ async def get_user(event):
     return replied_user
 
 
+async def LastOnline(user: User):
+    if user.is_bot:
+        return ""
+    elif user.status.recently:
+        return "Recently"
+    elif user.status.within_week:
+        return "Within the last week"
+    elif user.status.within_month:
+        return "Within the last month"
+    elif user.status.long_time_ago:
+        return "A long time ago"
+    elif user.status.online:
+        return "Currently Online"
+    elif user.status.offline:
+        return datetime.fromtimestamp(user.status.date).strftime("%a, %d %b %Y, %H:%M:%S")
+
+
 async def fetch_info(replied_user, event):
     """ Get details from the User object. """
     replied_user_profile_photos = await event.client(
@@ -117,7 +136,7 @@ async def fetch_info(replied_user, event):
     is_bot = replied_user.user.bot
     restricted = replied_user.user.restricted
     verified = replied_user.user.verified
-    user_status = replied_user.user.status
+    last_online=LastOnline(user)
     photo = await event.client.download_profile_photo(user_id,
                                                       TEMP_DOWNLOAD_DIRECTORY +
                                                       str(user_id) + ".jpg",
@@ -142,7 +161,7 @@ async def fetch_info(replied_user, event):
     caption += f"ID: <code>{user_id}</code>\n\n"
     caption += f"Bio: \n<code>{user_bio}</code>\n\n"
     caption += f"Common Chats with this user: {common_chat}\n"
-    caption += f"Last Seen: {user_status}\n"
+    caption += f"Last Seen: `{last_online}`"
     caption += f"Permanent Link To Profile: "
     caption += f"<a href=\"tg://user?id={user_id}\">{first_name}</a>"
 
