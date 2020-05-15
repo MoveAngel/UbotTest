@@ -96,17 +96,17 @@ async def get_user(event):
 async def SeenOnlineStatus(user):
     if user.is_bot:
         return ""
-    elif replied_user.user.status.recently:
+    elif user.status.recently:
         return "Recently"
-    elif replied_user.user.status.last_week:
+    elif user.status.last_week:
         return "Within the last week"
-    elif replied_user.user.status.last_month:
+    elif user.status.last_month:
         return "Within the last month"
-    elif replied_user.user.status.empty:
+    elif user.status.empty:
         return "A long time ago"
-    elif replied_user.user.status.online:
+    elif user.status.online:
         return "Currently Online"
-    elif replied_user.user.status.offline:
+    elif user.status.offline:
         return datetime.fromtimestamp(user.status.date).strftime("%a, %d %b %Y, %H:%M:%S")
 
 
