@@ -10,6 +10,7 @@ from PIL import Image
 import asyncio
 import time
 from datetime import datetime
+from logging import Logger as logger
 from telethon import events
 from hachoir.metadata import extractMetadata
 from hachoir.parser import createParser
@@ -20,7 +21,6 @@ import math
 import os
 import requests
 import zipfile
-import logging
 import requests
 import base64
 import json
