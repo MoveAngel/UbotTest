@@ -133,7 +133,7 @@ async def fetch_info(replied_user, event):
     user_bio = "This User has no About" if not user_bio else user_bio
     user_status = user_status.replace( "" ) if user_status else (
                   is_bot
-                    return "None"
+                    "None"
                   user.status.recently
                     return "Recently"
                   user.status.last_week
