@@ -94,7 +94,7 @@ async def get_user(event):
 
 
 async def SeenOnlineStatus(replied_user, user):
-    if user.is_bot:
+    if replied_user.user.is_bot:
         return ""
     elif replied_user.user.status.recently:
         return "Recently"
