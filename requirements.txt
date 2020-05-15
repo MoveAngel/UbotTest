@@ -31,7 +31,6 @@ psycopg2-binary
 pybase64>=0.4.0
 pyfiglet
 pylast
-pyrogram
 pySmartDL
 python-barcode
 python-dotenv
