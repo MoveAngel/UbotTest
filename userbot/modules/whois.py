@@ -93,10 +93,6 @@ async def get_user(event):
     return replied_user
 
 
-async def SeenOnlineStatus(replied_user, user):
-    
-
-
 async def fetch_info(replied_user, event):
     """ Get details from the User object. """
     replied_user_profile_photos = await event.client(
