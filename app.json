@@ -51,6 +51,10 @@
       "description": "In case you maintain a fork, add your repo URL here.",
       "required": false
     },
+    "MONGO_DB_URI": {
+      "description": "Fill this of your MongoDB Atlas URL.",
+      "required": true 
+    },
     "COUNTRY": {
       "description": "Set your Country to be used in the .time and .date commands.",
       "required": false
