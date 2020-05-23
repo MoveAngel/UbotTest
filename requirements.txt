@@ -31,13 +31,14 @@ psycopg2-binary
 pybase64>=0.4.0
 pyfiglet
 pylast
+pymongo[srv]
 pySmartDL
 python-barcode
 python-dotenv
 youtube-dl
 pytz
 qrcode
-redis>=3.3.10
+redis
 requests>=2.18.4
 search-engine-parser>=0.4.2
 speedtest-cli>=2.0.2
