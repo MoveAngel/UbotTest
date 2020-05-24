@@ -3,11 +3,15 @@
 # Licensed under the Raphielscape Public License, Version 1.d (the "License");
 # you may not use this file except in compliance with the License.
 #
+# Multifunction memes
+# 
 # Based code + improve from AdekMaulana and aidilaryanto
 
 from io import BytesIO
 from PIL import Image
 import asyncio
+import re
+import random
 import time
 from datetime import datetime
 from logging import Logger as logger
@@ -69,6 +73,22 @@ if 1 == 1:
 
 
 THUMB_IMAGE_PATH = "./thumb_image.jpg"
+
+
+EMOJI_PATTERN = re.compile(
+    "["
+    "\U0001F1E0-\U0001F1FF"  # flags (iOS)
+    "\U0001F300-\U0001F5FF"  # symbols & pictographs
+    "\U0001F600-\U0001F64F"  # emoticons
+    "\U0001F680-\U0001F6FF"  # transport & map symbols
+    "\U0001F700-\U0001F77F"  # alchemical symbols
+    "\U0001F780-\U0001F7FF"  # Geometric Shapes Extended
+    "\U0001F800-\U0001F8FF"  # Supplemental Arrows-C
+    "\U0001F900-\U0001F9FF"  # Supplemental Symbols and Pictographs
+    "\U0001FA00-\U0001FA6F"  # Chess Symbols
+    "\U0001FA70-\U0001FAFF"  # Symbols and Pictographs Extended-A
+    "\U00002702-\U000027B0"  # Dingbats
+    "]+")
 
 
 @register(outgoing=True, pattern="^.pch(?: |$)(.*)")
@@ -364,7 +384,9 @@ async def quotes(qotlti):
           try:     
               response = conv.wait_event(events.NewMessage(incoming=True,from_users=1031952739))
               await bot.forward_messages(chat, reply_message)
-              response = await response 
+              response = await response
+              """ - don't spam notif - """
+              await bot.send_read_acknowledge(conv.chat_id)
           except YouBlockedUserError: 
               await qotlti.reply("```Please unblock @QuotLyBot and try again```")
               return
@@ -373,6 +395,10 @@ async def quotes(qotlti):
           else: 
              await qotlti.delete()   
              await bot.forward_messages(qotlti.chat_id, response.message)
+             await bot.send_read_acknowledge(qotlti.chat_id)
+             """ - cleanup chat after completed - """
+             await qotlti.client.delete_messages(conv.chat_id,
+                                                 [msg.id, response.id])
 
 
 @register(outgoing=True, pattern=r'^.hz(:? |$)(.*)?')
@@ -510,66 +536,53 @@ async def fryerrr(fry):
     return os.remove(downloaded_file_name)
 
 
-@register(outgoing=True, pattern="^.sg(?: |$)(.*)")
-async def lastname(steal):
-    if steal.fwd_from:
-        return 
-    if not steal.reply_to_msg_id:
-       await steal.edit("```Reply to any user message.```")
-       return
-    reply_message = await steal.get_reply_message() 
-    if not reply_message.text:
-       await steal.edit("```reply to text message```")
-       return
-    chat = "@SangMataInfo_bot"
-    sender = reply_message.sender
-    if reply_message.sender.bot:
-       await steal.edit("```Reply to actual users message.```")
-       return
-    await steal.edit("```Sit tight while I steal some data from NASA```")
-    async with bot.conversation(chat) as conv:
-          try:     
-              response = conv.wait_event(events.NewMessage(incoming=True,from_users=461843263))
-              await bot.forward_messages(chat, reply_message)
-              response = await response 
-          except YouBlockedUserError: 
-              await steal.reply("```Please unblock @sangmatainfo_bot and try again```")
-              return
-          if response.text.startswith("Forward"):
-             await steal.edit("```can you kindly disable your forward privacy settings for good?```")
-          else: 
-             await steal.edit(f"{response.message.message}")
+@register(outgoing=True, pattern="^.waifu(?: |$)(.*)")
+async def waifu(animu):
+    text = animu.pattern_match.group(1)
+    if not text:
+        if animu.is_reply:
+            text = (await animu.get_reply_message()).message
+        else:
+            await animu.answer("`No text given, hence the waifu ran away.`")
+            return
+    animus = [20, 32, 33, 40, 41, 42, 58]
+    sticcers = await bot.inline_query(
+        "stickerizerbot", f"#{random.choice(animus)}{(deEmojify(text))}")
+    await sticcers[0].click(animu.chat_id,
+                            reply_to=animu.reply_to_msg_id,
+                            silent=True if animu.is_reply else False,
+                            hide_via=True)
+    await animu.delete()
 
 
-@register(outgoing=True, pattern="^.fakemail(?: |$)(.*)")
-async def pembohong(fake):
-    if fake.fwd_from:
-        return 
-    if not fake.reply_to_msg_id:
-       await fake.edit("```Reply to any user message.```")
-       return
-    reply_message = await fake.get_reply_message() 
-    if not reply_message.text:
-       await fake.edit("```reply to text message```")
-       return
-    chat = "@fakemailbot"
-    sender = reply_message.sender
-    if reply_message.sender.bot:
-       await fake.edit("```Reply to actual users message.```")
-       return
-    await fake.edit("```Sit tight while I sending some data from Microsoft```")
-    async with bot.conversation(chat) as conv:
-          try:     
-              response = conv.wait_event(events.NewMessage(incoming=True,from_users=177914997))
-              await bot.forward_messages(chat, reply_message)
-              response = await response 
-          except YouBlockedUserError: 
-              await fake.reply("```Please unblock @fakemailbot and try again```")
-              return
-          if response.text.startswith("send"):
-             await fake.edit("```can you kindly disable your forward privacy settings for good?```")
-          else: 
-             await fake.edit(f"{response.message.message}")
+@register(outgoing=True, pattern="^.rastick(?: |$)(.*)")
+async def rastick(wotstick):
+    text = wotstick.pattern_match.group(1)
+    if not text:
+        if wotstick.is_reply:
+            text = (await wotstick.get_reply_message()).message
+        else:
+            await wotstick.answer("`No text given, hence no stickers.`")
+            return
+    wotstick = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
+               11, 12, 13, 14, 15, 16, 17, 18, 
+               19, 20, 21, 22, 23, 24, 25, 26, 
+               27, 28, 29, 30, 31, 32, 33, 34, 
+               35, 36, 37, 38, 39, 40, 41, 42, 
+               43, 44, 45, 46, 47, 48, 49, 50, 
+               51, 52, 53, 54, 55, 56, 57, 58, 
+               59, 60, 61, 62, 63]
+    stichers = await bot.inline_query(
+        "stickerizerbot", f"#{random.choice(wotstick)}{(deEmojify(text))}")
+    await stichers[0].click(wotstick.chat_id,
+                            reply_to=wotstick.reply_to_msg_id,
+                            silent=True if wotstick.is_reply else False,
+                            hide_via=True)
+    await wotstick.delete()
+
+
+def deEmojify(inputString: str) -> str:
+    return re.sub(EMOJI_PATTERN, '', inputString)
 
 
 CMD_HELP.update({
@@ -602,12 +615,18 @@ CMD_HELP.update({
         ".df or .df [level(1-8)]"
             "\nUsage: deepfry image/sticker from the reply."
             "\n@image_deepfrybot"
-})
+    })
 
 CMD_HELP.update({
-        "mata mata": 
-        ".sg \
-            \nUsage: Steal ur or friend name.\
-        \n\n.fakemail\
-            \nUsage: Fake an email to ur friends or someone."
+        "waifu": 
+        ".waifu \
+          \nUsage: Enchance your text with beautiful anime girl templates. \
+          \n@StickerizerBot"
+    })
+
+CMD_HELP.update({
+        "rastick":
+        ".rastick \
+          \nUsage: To stickerize your text with random sticker templates. \
+          \n@StickerizerBot"
     })
