@@ -35,7 +35,7 @@ from telethon.tl.types import (DocumentAttributeFilename, DocumentAttributeStick
                                InputMediaUploadedDocument, InputPeerNotifySettings,
                                InputStickerSetID, InputStickerSetShortName,
                                MessageMediaPhoto)
-from userbot.utils import progress, humanbytes, time_formatter
+from userbot.modules.upload_download import progress, humanbytes, time_formatter
 from userbot import bot, CMD_HELP, TEMP_DOWNLOAD_DIRECTORY, QUOTES_API_TOKEN
 from userbot.events import register
 
