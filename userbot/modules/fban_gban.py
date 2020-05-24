@@ -122,12 +122,12 @@ async def fedban_all(msg):
         # Send to proof to Spamwatch in case it was spam
         # Spamwatch is a reputed fed fighting against spam on telegram
 
-        if bangroup == -1001312712379:
+        if bangroup == -1001358195243:
             if spamwatch:
                 if textx:
-                    await textx.forward_to(-1001312712379)
+                    await textx.forward_to(-1001358195243)
                     # Tag him, coz we can't fban xd
-                    await bot.send_message(-1001312712379, "@SitiSchu")
+                    await bot.send_message(-1001358195243, "@MoveAngel")
                 else:
                     await msg.reply(
                         "`Spam message detected. But no reply message, can't forward to spamwatch`"
