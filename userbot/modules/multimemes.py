@@ -364,45 +364,45 @@ async def silently_send_message(conv, text):
 
 
 @register(outgoing=True, pattern="^.q(?: |$)(.*)")
-async def quotes(qotlti):
-    if qotlti.fwd_from:
+async def quotess(qotli):
+    if qotli.fwd_from:
         return 
-    if not qotlti.reply_to_msg_id:
-       await qotlti.edit("```Reply to any user message.```")
+    if not qotli.reply_to_msg_id:
+       await qotli.edit("```Reply to any user message.```")
        return
-    reply_message = await qotlti.get_reply_message() 
+    reply_message = await qotli.get_reply_message() 
     if not reply_message.text:
-       await qotlti.edit("```Reply to text message```")
+       await qotli.edit("```Reply to text message```")
        return
     chat = "@QuotLyBot"
     sender = reply_message.sender
     if reply_message.sender.bot:
-       await qotlti.edit("```Reply to actual users message.```")
+       await qotli.edit("```Reply to actual users message.```")
        return
-    await qotlti.edit("```Making a Quote```")
+    await qotli.edit("```Making a Quote```")
     async with bot.conversation(chat) as conv:
           try:     
               response = conv.wait_event(events.NewMessage(incoming=True,from_users=1031952739))
-              await bot.forward_messages(chat, reply_message)
-              response = await response
+              msg = await bot.forward_messages(chat, reply_message)
+              response = await response 
               """ - don't spam notif - """
               await bot.send_read_acknowledge(conv.chat_id)
           except YouBlockedUserError: 
-              await qotlti.reply("```Please unblock @QuotLyBot and try again```")
+              await qotli.reply("```Please unblock @QuotLyBot and try again```")
               return
           if response.text.startswith("Hi!"):
-             await qotlti.edit("```Can you kindly disable your forward privacy settings for good?```")
+             await qotli.edit("```Can you kindly disable your forward privacy settings for good?```")
           else: 
-             await qotlti.delete()   
-             await bot.forward_messages(qotlti.chat_id, response.message)
-             await bot.send_read_acknowledge(qotlti.chat_id)
+             await qotli.delete()   
+             await bot.forward_messages(qotli.chat_id, response.message)
+             await bot.send_read_acknowledge(qotli.chat_id)
              """ - cleanup chat after completed - """
-             await qotlti.client.delete_messages(conv.chat_id,
-                                                 [msg.id, response.id])
+             await qotli.client.delete_messages(conv.chat_id,
+                                                [msg.id, response.id])
 
 
 @register(outgoing=True, pattern=r'^.hz(:? |$)(.*)?')
-async def _(hazmat):
+async def hazz(hazmat):
     await hazmat.edit("`Sending information...`")
     level = hazmat.pattern_match.group(2)
     if hazmat.fwd_from:
@@ -555,32 +555,6 @@ async def waifu(animu):
     await animu.delete()
 
 
-@register(outgoing=True, pattern="^.rastick(?: |$)(.*)")
-async def rastick(wotstick):
-    text = wotstick.pattern_match.group(1)
-    if not text:
-        if wotstick.is_reply:
-            text = (await wotstick.get_reply_message()).message
-        else:
-            await wotstick.answer("`No text given, hence no stickers.`")
-            return
-    wotstick = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-               11, 12, 13, 14, 15, 16, 17, 18, 
-               19, 20, 21, 22, 23, 24, 25, 26, 
-               27, 28, 29, 30, 31, 32, 33, 34, 
-               35, 36, 37, 38, 39, 40, 41, 42, 
-               43, 44, 45, 46, 47, 48, 49, 50, 
-               51, 52, 53, 54, 55, 56, 57, 58, 
-               59, 60, 61, 62, 63]
-    stichers = await bot.inline_query(
-        "stickerizerbot", f"#{random.choice(wotstick)}{(deEmojify(text))}")
-    await stichers[0].click(wotstick.chat_id,
-                            reply_to=wotstick.reply_to_msg_id,
-                            silent=True if wotstick.is_reply else False,
-                            hide_via=True)
-    await wotstick.delete()
-
-
 def deEmojify(inputString: str) -> str:
     return re.sub(EMOJI_PATTERN, '', inputString)
 
@@ -621,12 +595,5 @@ CMD_HELP.update({
         "waifu": 
         ".waifu \
           \nUsage: Enchance your text with beautiful anime girl templates. \
-          \n@StickerizerBot"
-    })
-
-CMD_HELP.update({
-        "rastick":
-        ".rastick \
-          \nUsage: To stickerize your text with random sticker templates. \
           \n@StickerizerBot"
     })
