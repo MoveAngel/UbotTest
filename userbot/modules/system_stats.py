@@ -123,10 +123,10 @@ async def pipcheck(pip):
 async def amireallyalive(alive):
     """ For .alive command, check if the bot is running.  """
     await alive.edit("`Testing Ubot `\n"
-                     f"{version.__version__} "
+                     f"v{version.__version__} "
                      f"<> v{python_version()} "
-                     f"<> v{DEFAULTUSER} \n"
-                     f"`Running on` __{UPSTREAM_REPO_BRANCH}__ \n")
+                     f"<> {DEFAULTUSER} \n"
+                     f"__Running on {UPSTREAM_REPO_BRANCH}__ \n")
 
 
 @register(outgoing=True, pattern="^.aliveu")
